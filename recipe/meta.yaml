@@ -1,31 +1,33 @@
 {% set name = "pytest-django-haystack" %}
 {% set version = "0.3.0" %}
-{% set sha256 = "43547d5d8a816d1b460835a2b384a8ddac985c06ff79ab3f9216107460174f80" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 43547d5d8a816d1b460835a2b384a8ddac985c06ff79ab3f9216107460174f80
 
 build:
   noarch: python
-  number: 0
-  script: python -m pip install --no-deps --ignore-installed .
+  number: 1
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
-    - python
+    - python {{ python_min }}
+    - setuptools
     - pip
   run:
-    - python
+    - python >={{ python_min }}
     - pytest
     - django
     - pytest-django
 
 test:
+  requires:
+    - python {{ python_min }}
   imports:
     - pytest_django_haystack
 
